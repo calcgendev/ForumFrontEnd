@@ -1,12 +1,44 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import 'semantic-ui-css/semantic.min.css';
+import {Provider} from 'react-redux';
+import {BrowserRouter, Switch, Route} from 'react-router-dom';
+import {PersistGate} from 'redux-persist/integration/react';
+import Loader from './components/loader';
+import store, {persistor} from './store';
+import HeaderContainer from './containers/header/header';
+import ModalContainer from './containers/modal';
+import UserProfileContainer from './containers/userprofile/userprofile';
+import UsersContainer from './containers/users/users';
+import ThreadContainer from './containers/thread/thread';
+import HomeContainer from './containers/home/home';
+import ForumContainer from './containers/forum/forum';
+import NotFoundPage from './components/notfoundpage';
+import registerServiceWorker from './registerServiceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+ReactDOM.render(
+  <Provider store={store}>
+    <PersistGate loading={<Loader />} persistor={persistor}>
+      <BrowserRouter>
+        <Fragment>
+          <header className="header-background" />
+          <div className="app-layout">
+            <HeaderContainer />
+            <Switch>
+              <Route path="/users" component={UsersContainer} />
+              <Route path="/user/:username" component={UserProfileContainer} />
+              <Route path="/forum/:forum" component={ForumContainer} />
+              <Route path="/thread/:thread" component={ThreadContainer} />
+              <Route exact path="/" component={HomeContainer} />
+              <Route component={NotFoundPage} />
+            </Switch>
+          </div>
+          <ModalContainer />
+        </Fragment>
+      </BrowserRouter>
+    </PersistGate>
+  </Provider>,
+  document.getElementById('root'),
+);
+registerServiceWorker();

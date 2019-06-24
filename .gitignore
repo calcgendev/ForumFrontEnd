@@ -11,6 +11,10 @@
 # production
 /build
 
+#secret
+client-secret.json
+api_key.py
+
 # misc
 .DS_Store
 .env.local

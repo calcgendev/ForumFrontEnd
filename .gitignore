@@ -8,6 +8,9 @@
 # testing
 /coverage
 
+#secret files
+client-secret.json
+api_key.py
 # production
 /build
 
